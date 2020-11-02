@@ -1,0 +1,30 @@
+{
+  "name": "multistep-checkout",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server",
+    "babel-watch": "babel client --out-dir public --presets @babel/preset-react --source-maps inline --watch",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sband1/multistep-checkout.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sband1/multistep-checkout/issues"
+  },
+  "homepage": "https://github.com/sband1/multistep-checkout#readme",
+  "dependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-react": "^7.12.1",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
