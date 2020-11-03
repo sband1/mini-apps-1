@@ -79,12 +79,47 @@ var checkMajorDiagonal = function() {
   tableTitle(countX, countO);
 }
 
+// Helper function to check diagonals
+var checkMajorDiagonal = function() {
+  var c1r1 = document.querySelector('.first-row').children[2].innerHTML;
+  var c2r2 = document.querySelector('.second-row').children[1].innerHTML;
+  var c3r3 = document.querySelector('.third-row').children[0].innerHTML;
+  var minorDiagonalArr = [c1r1, c2r2, c3r3];
+  var countX = 0;
+  var countO = 0;
+  for (var i = 0; i < minorDiagonalArr.length; i++) {
+    if (minorDiagonalArr[i] === 'X') {
+      countX++;
+    } else if (minorDiagonalArr[i] === 'O') {
+      countO++;
+    }
+  }
+  tableTitle(countX, countO);
+}
+
+var checkWinner = function(rowClass, cellClass) {
+  // Helper function to check rows
+  checkRow(rowClass);
+  // Helper function to check columns
+  checkColumn(cellClass);
+  // Helper function to check diagonals
+  checkMinorDiagonal();
+  // Helper function to check diagonals
+  checkMajorDiagonal();
+  // console.log(winner);
+}
+
+
 
 // Event handler to add X or O to squares
+// Event handler to check winner after each click
 var start = "X";
+var count = 0;
 document.addEventListener('click', function(event) {
+  console.log('hihi')
   var target = event.target;
   if (target.tagName === "TD") {
+    count++
     target.innerHTML = start;
     if (start === "X") {
       target.style.background = "darkseagreen";
@@ -93,15 +128,19 @@ document.addEventListener('click', function(event) {
       start = "X";
       target.style.background = "coral";
     }
-    var parentClassName = target.parentElement.className;
+    var rowClassName = target.parentElement.className;
     var cellClassName = target.className;
-    // call helper function
-    checkRow(parentClassName);
-    checkColumn(cellClassName);
-    checkMinorDiagonal();
-    checkMajorDiagonal();
+    checkWinner(rowClassName, cellClassName);
+  }
+  if (count === 9 && document.querySelector('h2').innerHTML === "Let's Play!") {
+    document.querySelector('h2').innerHTML = "Tie!"
   }
 });
 
+// Event handler for button new game
+document.querySelector("button").addEventListener('click', function(event) {
+  var cellArr = document.querySelectorAll("td");
+  console.log(cellArr);
 
-// Event Handler to check rows, columns, and diagonals for winner
+});
+
