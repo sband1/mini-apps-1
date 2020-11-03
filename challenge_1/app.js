@@ -106,7 +106,6 @@ var checkWinner = function(rowClass, cellClass) {
   checkMinorDiagonal();
   // Helper function to check diagonals
   checkMajorDiagonal();
-  // console.log(winner);
 }
 
 
@@ -116,9 +115,8 @@ var checkWinner = function(rowClass, cellClass) {
 var start = "X";
 var count = 0;
 document.addEventListener('click', function(event) {
-  console.log('hihi')
   var target = event.target;
-  if (target.tagName === "TD") {
+  if (target.tagName === "TD" && target.innerHTML === "") {
     count++
     target.innerHTML = start;
     if (start === "X") {
@@ -140,7 +138,11 @@ document.addEventListener('click', function(event) {
 // Event handler for button new game
 document.querySelector("button").addEventListener('click', function(event) {
   var cellArr = document.querySelectorAll("td");
-  console.log(cellArr);
-
+  count = 0;
+  start ="X";
+  for (var i = 0; i < cellArr.length; i++) {
+    cellArr[i].innerHTML = "";
+    cellArr[i].style.background = "white";
+  }
 });
 
