@@ -1,3 +1,4 @@
+
 class App extends React.Component {
   constructor() {
     super();
@@ -86,7 +87,8 @@ class F1 extends React.Component {
 
   handleSubmit() {
     // axios post request
-
+    axios.get('/details')
+    .then ((response) => {console.log('hi!'); console.log(response.data)})
     this.props.handleFormState(2)
   }
 

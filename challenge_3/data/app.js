@@ -11,6 +11,14 @@ MongoClient.connect(url, function(err, client) {
   console.log("Connected to the server!");
 
   const db = client.db(dbName);
+  db.createCollection("details", function(err, res) {
+    if (err) {
+      console.log('mongo', err);
+    } else {
+      console.log("Collection created!", res);
+    }
+  })
 
   client.close();
 });
+
