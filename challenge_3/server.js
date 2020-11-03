@@ -11,21 +11,45 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 app.get('/details', (req, res) => {
-  db.User.find({}, (err, data) => {
+  var query = {name: req.query.name}
+  console.log('req.query', req.query)
+  db.User.find(query, (err, data) => {
     if (err) {
       console.log('get mongoose', err);
       res.status(404).send(err);
     } else {
-      res.status(201).json(data);
+      res.status(201).json(data[0]);
     }
   });
 })
 
 app.post('/details', (req, res) => {
    // use req.body
-  console.log('sever post', req.body);
-  console.log('post time', req.body)
-  res.send('hi');
+  var user = new db.User(req.body);
+  user.save((err, data) => {
+    if (err) {
+      console.log('post mongoose', err);
+      res.status(404).send(err);
+    } else {
+      console.log('post data', data);
+      res.sendStatus(201);
+    }
+  })
+})
+
+app.put('/details', (req, res) => {
+  var update = req.body;
+  var query = {name: req.body.name};
+  console.log('PutTT', update);
+  db.User.findOneAndUpdate(query, update, (err, data) => {
+    if (err) {
+      console.log('put mongoose', err);
+      res.status(404).send(err);
+    } else {
+      console.log('put data', data);
+      res.sendStatus(201);
+    }
+  })
 })
 
 app.listen(PORT, () => {

@@ -15,7 +15,15 @@ db.once('open', function() {
 const purchaseSchema = new mongoose.Schema({
   name: String,
   email: String,
-  password: String
+  password: String,
+  street: String,
+  city: String,
+  state: String,
+  zipcode: String,
+  creditCard: String,
+  expiryDate: String,
+  CVV: String,
+  billingZipcode: String,
 })
 
 const User = mongoose.model('User', purchaseSchema);

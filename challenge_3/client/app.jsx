@@ -28,7 +28,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <FormHandler formState={this.state.formState} handleFormState={this.handleFormState}/>
+        <FormHandler details={this.state} formState={this.state.formState} handleFormState={this.handleFormState}/>
       </div>
     )
   }
@@ -51,13 +51,13 @@ class FormHandler extends React.Component {
       return <F1 handleFormState={this.props.handleFormState}/>;
     }
     if (this.props.formState === 2) {
-      return <F2 handleFormState={this.props.handleFormState}/>;
+      return <F2 details={this.props.details} handleFormState={this.props.handleFormState}/>;
     }
     if (this.props.formState === 3) {
-      return <F3 handleFormState={this.props.handleFormState}/>;
+      return <F3 details={this.props.details} handleFormState={this.props.handleFormState}/>;
     }
     if (this.props.formState === 4) {
-      return <Purchased handleFormState={this.props.handleFormState}/>;
+      return <Purchased details={this.props.details} handleFormState={this.props.handleFormState}/>;
     }
   }
 }
@@ -95,9 +95,10 @@ class F1 extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
     // axios post request
-    axios.post({
+    event.preventDefault();
+    axios({
       method: 'post',
       url:'http://localhost:3000/details/',
       data: {
@@ -160,10 +161,25 @@ class F2 extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
     // axios post request
-
-    this.props.handleFormState(this.state)
+    event.preventDefault();
+    axios({
+      method: 'put',
+      url:'http://localhost:3000/details/',
+      data: {
+        street: this.state.street,
+        city: this.state.city,
+        state: this.state.state,
+        zipcode: this.state.zipcode,
+        name: this.props.details.name,
+      }
+    })
+    .then ((response) => {
+      console.log('Client PUT sucess');
+      this.props.handleFormState(this.state)
+    })
+    .catch((err) => console.log('Put', err));
   }
 
   handleChange(event) {
@@ -217,10 +233,25 @@ class F3 extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit() {
+  handleSubmit(event) {
     // axios post request
-
-    this.props.handleFormState(this.state)
+    event.preventDefault();
+    axios({
+      method: 'put',
+      url:'http://localhost:3000/details/',
+      data: {
+        creditCard: this.state.street,
+        expiryDate: this.state.city,
+        CVV: this.state.state,
+        billingZipcode: this.state.zipcode,
+        name: this.props.details.name,
+      }
+    })
+    .then ((response) => {
+      console.log('Client PUT sucess');
+      this.props.handleFormState(this.state)
+    })
+    .catch((err) => console.log('Put', err));
   }
 
   handleChange(event) {
@@ -263,17 +294,35 @@ class F3 extends React.Component {
 class Purchased extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+
+    }
+
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit() {
-    // axios post request
 
+  componentDidMount() {
+    axios({
+      method: 'get',
+      url:'http://localhost:3000/details/',
+      params: {
+        name: this.props.details.name,
+      }
+    })
+    .then((response) => {
+      console.log("WOOT", response.data);
+      this.setState({details: response.data})
+    })
+  }
+  handleSubmit(event) {
+    event.preventDefault();
     this.props.handleFormState({formState: 0});
   }
   render() {
     return (
       <div>
         <h1>Confirmation!</h1>
+        <h4>{this.state.details.name}</h4>
         <button onClick={this.handleSubmit}>Purchased</button>
       </div>
     )
