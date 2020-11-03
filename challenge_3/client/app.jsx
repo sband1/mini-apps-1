@@ -5,15 +5,24 @@ class App extends React.Component {
     // 0 = homepage, 1 = F1, 2 = F2, 3 = F3
     this.state = {
       formState: 0,
+      name: '',
+      email: '',
+      password: '',
+      street: '',
+      city: '',
+      state: '',
+      zipcode: '',
+      creditCard: '',
+      expiryDate: '',
+      CVV: '',
+      billingZipcode: '',
     }
 
     this.handleFormState = this.handleFormState.bind(this);
   }
   //update state function
-  handleFormState(page) {
-    this.setState({
-      formState: page,
-    })
+  handleFormState(stateObj) {
+    this.setState(stateObj)
   }
 
   render() {
@@ -64,7 +73,7 @@ class Homepage extends React.Component {
     return (
       <div>
         <h1>HomePage!</h1>
-        <button onClick={() => {this.props.handleFormState(1)}}>Checkout</button>
+        <button onClick={() => {this.props.handleFormState({formState: 1})}}>Checkout</button>
       </div>
     )
   }
@@ -79,6 +88,7 @@ class F1 extends React.Component {
       name: '',
       email: '',
       password: '',
+      formState: 2,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -87,9 +97,20 @@ class F1 extends React.Component {
 
   handleSubmit() {
     // axios post request
-    axios.get('/details')
-    .then ((response) => {console.log('hi!'); console.log(response.data)})
-    this.props.handleFormState(2)
+    axios.post({
+      method: 'post',
+      url:'http://localhost:3000/details/',
+      data: {
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password,
+      }
+    })
+    .then ((response) => {
+      console.log('Client sucess');
+      this.props.handleFormState(this.state)
+    })
+    .catch((err) => console.log(err));
   }
 
   handleChange(event) {
@@ -132,6 +153,7 @@ class F2 extends React.Component {
       city: '',
       state: '',
       zipcode: '',
+      formState: 3,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -141,7 +163,7 @@ class F2 extends React.Component {
   handleSubmit() {
     // axios post request
 
-    this.props.handleFormState(3)
+    this.props.handleFormState(this.state)
   }
 
   handleChange(event) {
@@ -188,6 +210,7 @@ class F3 extends React.Component {
       expiryDate: '',
       CVV: '',
       billingZipcode: '',
+      formState: 4,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -197,7 +220,7 @@ class F3 extends React.Component {
   handleSubmit() {
     // axios post request
 
-    this.props.handleFormState(4)
+    this.props.handleFormState(this.state)
   }
 
   handleChange(event) {
@@ -235,7 +258,7 @@ class F3 extends React.Component {
 }
 
 
-//********************* Purchased *****************************/
+//********************* Confirmation *****************************/
 
 class Purchased extends React.Component {
   constructor(props) {
@@ -245,12 +268,12 @@ class Purchased extends React.Component {
   handleSubmit() {
     // axios post request
 
-    this.props.handleFormState(0);
+    this.props.handleFormState({formState: 0});
   }
   render() {
     return (
       <div>
-        <h1>Purchased!</h1>
+        <h1>Confirmation!</h1>
         <button onClick={this.handleSubmit}>Purchased</button>
       </div>
     )
