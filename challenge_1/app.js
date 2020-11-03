@@ -1,7 +1,16 @@
 console.log("hello world")
 
-console.log(document.getElementsByTagName('h2').innerHTML)
 
+// Helper funtion for table title change
+var tableTitle = function(countX, countO) {
+  if (countX === 3) {
+    console.log("X Wins! Woo-hoo!")
+    document.querySelector('h2').innerHTML = "X Wins Woo-hoo!";
+  }
+  if (countO === 3) {
+    document.querySelector('h2').innerHTML = "O Wins Woot!";;
+  }
+}
 
 
 // Helper function to check rows
@@ -16,31 +25,22 @@ var checkRow = function(row) {
       countO++;
     }
   }
-
-  if (countX === 3) {
-    console.log("X Wins! Woo-hoo!")
-    document.querySelector('h2').innerHTML = "X Wins Woo-hoo!";
-  }
-  if (countO === 3) {
-    document.querySelector('h2').innerHTML = "O Wins Woot!";;
-  }
-
+  tableTitle(countX, countO);
 }
 
 // Helper function to check columns
-var checkColumn = function(column) {
-  var columnChildren = document.querySelectorAll(`.${column}`);
-  console.log("columnChildren", columnChildren);
+var checkColumn = function(cellClass) {
+  var columnChildren = document.querySelectorAll(`.${cellClass}`);
   var countX = 0;
   var countO = 0;
   for (var i = 0; i < columnChildren.length; i++) {
     if (columnChildren[i].innerHTML === 'X') {
       countX++;
-      console.log("columnX", countX);
     } else if (columnChildren[i].innerHTML === 'O') {
       countO++;
     }
   }
+  tableTitle(countX, countO);
 }
 
 // Helper function to check diagonals
@@ -58,7 +58,25 @@ var checkMinorDiagonal = function() {
       countO++;
     }
   }
+  tableTitle(countX, countO);
+}
 
+// Helper function to check diagonals
+var checkMajorDiagonal = function() {
+  var c1r1 = document.querySelector('.first-row').children[2].innerHTML;
+  var c2r2 = document.querySelector('.second-row').children[1].innerHTML;
+  var c3r3 = document.querySelector('.third-row').children[0].innerHTML;
+  var minorDiagonalArr = [c1r1, c2r2, c3r3];
+  var countX = 0;
+  var countO = 0;
+  for (var i = 0; i < minorDiagonalArr.length; i++) {
+    if (minorDiagonalArr[i] === 'X') {
+      countX++;
+    } else if (minorDiagonalArr[i] === 'O') {
+      countO++;
+    }
+  }
+  tableTitle(countX, countO);
 }
 
 
@@ -81,6 +99,7 @@ document.addEventListener('click', function(event) {
     checkRow(parentClassName);
     checkColumn(cellClassName);
     checkMinorDiagonal();
+    checkMajorDiagonal();
   }
 });
 
