@@ -1,0 +1,13 @@
+table {
+  background-color: aquamarine;
+  width: 600px;
+}
+
+tr {
+  height: 100px;
+  width: 100px;
+}
+.square {
+  border: 10px solid;
+  /* height: 100px; */
+}
